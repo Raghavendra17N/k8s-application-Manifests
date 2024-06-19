@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grafana
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - image: grafana/grafana:latest
+        name: grafana
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "500m"
+            memory: 1Gi 
+          limits:
+            cpu: "500m"
+            memory: 1Gi
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-vol
+      volumes:
+        - name: grafana-vol
+          hostPath:
+            path: /mnt/grafana
+status: {}
