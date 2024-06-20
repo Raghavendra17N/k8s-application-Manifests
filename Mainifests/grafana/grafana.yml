@@ -35,6 +35,5 @@ spec:
             name: grafana-vol
       volumes:
         - name: grafana-vol
-          hostPath:
-            path: /mnt/grafana
+          emptyDir: {}
 status: {}
