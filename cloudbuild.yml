@@ -8,6 +8,7 @@ steps:
         docker build -t raghava99/adservice-demo:$COMMIT_SHA .
         docker login --username=$$USERNAME --password=$$PASSWORD
         docker push raghava99/adservice-demo:$COMMIT_SHA
+  secretEnv: ['USERNAME', 'PASSWORD']
 - id: Updating $COMMIT_SHA in Manifests file
   name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
