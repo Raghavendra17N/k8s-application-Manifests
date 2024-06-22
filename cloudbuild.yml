@@ -22,9 +22,9 @@ steps:
         git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/DOCKER_PASSWORD/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-PASSWORD/versions/1
     env: 'PASSWORD'
-  - versionName: projects/$PROJECT_ID/secrets/DOCKER_USERNAME/versions/1
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-USERNAME/versions/1
     env: 'USERNAME'
 logsBucket: 'gs://charged-muse-376504-iac-tf-state/build-logs'
 options:
