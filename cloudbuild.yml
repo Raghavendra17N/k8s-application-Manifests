@@ -15,11 +15,13 @@ steps:
   args:
     - '-c'
     - |
-        git clone $REPO_NAME
+        git clone https://github.com/Raghavendra17N/k8s-application-Manifests.git
         cd $REPO_NAME
         git checkout $BRANCH_NAME
         cd Manifests/$BRANCH_NAME
         sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' adservice.yml
+        git config --global user.email "CloudBuild@gcp-cloud.com"
+        git config --global user.name "CloudBuild"
         git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
 availableSecrets:
   secretManager:
