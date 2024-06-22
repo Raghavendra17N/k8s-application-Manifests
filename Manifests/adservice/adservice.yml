@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adservice
+  labels:
+    app: adservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adservice
+  template:
+    metadata:
+      name: adsvc-pod
+      labels:
+        app: adservice
+    spec:
+      serviceAccountName: adservice
+      containers:
+        - name: adservice
+          image: raghava99/adservice-demo:latest
+          ports:
+           - containerPort: 9555
+          env:
+            - name: PORT
+              value: "9555"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 180Mi
+            limits:
+              cpu: 300m 
+              memory: 250Mi
+          redinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            grpc:
+              port: 9555
+
+            
