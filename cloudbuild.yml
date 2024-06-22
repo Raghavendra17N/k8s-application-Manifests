@@ -1,14 +1,14 @@
 steps:
-# - id: Build Docker Image of the AdService 
-#   name: 'gcr.io/cloud-builders/docker'
-#   entrypoint: 'bash'
-#   args:
-#     - '-c'
-#     - |
-#         docker build -t raghava99/adservice-demo:$COMMIT_SHA .
-#         docker login --username=$$USERNAME --password=$$PASSWORD
-#         docker push raghava99/adservice-demo:$COMMIT_SHA
-#   secretEnv: ['USERNAME', 'PASSWORD']
+- id: Build Docker Image of the AdService 
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        docker build -t raghava99/adservice-demo:$COMMIT_SHA .
+        docker login --username=$$USERNAME --password=$$PASSWORD
+        docker push raghava99/adservice-demo:$COMMIT_SHA
+  secretEnv: ['USERNAME', 'PASSWORD']
 - id: Updating $COMMIT_SHA in Manifests file
   name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
@@ -26,10 +26,10 @@ steps:
   secretEnv: ['TOKEN']
 availableSecrets:
   secretManager:
-  # - versionName: projects/$PROJECT_ID/secrets/DOCKER-PASSWORD/versions/1
-  #   env: 'PASSWORD'
-  # - versionName: projects/$PROJECT_ID/secrets/DOCKER-USERNAME/versions/1
-  #   env: 'USERNAME'
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-PASSWORD/versions/1
+    env: 'PASSWORD'
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-USERNAME/versions/1
+    env: 'USERNAME'
   - versionName: projects/$PROJECT_ID/secrets/GIT-PAT-TOKEN/versions/1
     env: 'TOKEN'  
 logsBucket: 'gs://charged-muse-376504-iac-tf-state/build-logs'
