@@ -18,7 +18,7 @@ spec:
       serviceAccountName: adservice
       containers:
         - name: adservice
-          image: raghava99/adservice-demo:latest
+          image: raghava99/adservice-demo:63917f0b82c6c8564f526c913f1f57d71bc25085
           ports:
            - containerPort: 9555
           env:
