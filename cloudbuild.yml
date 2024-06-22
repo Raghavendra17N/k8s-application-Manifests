@@ -5,7 +5,8 @@ steps:
   args:
     - '-c'
     - |
-        docker build -t raghava99/adservice-demo:$COMMIT_SHA . 
+        docker build -t raghava99/adservice-demo:$COMMIT_SHA .
+        docker login --username=$$USERNAME --password=$$PASSWORD
         docker push raghava99/adservice-demo:$COMMIT_SHA
 - id: Updating $COMMIT_SHA in Manifests file
   name: 'gcr.io/cloud-builders/gcloud'
@@ -15,7 +16,13 @@ steps:
     - |
         git clone $REPO_NAME
         cd $REPO_NAME
+        git checkout $BRANCH_NAME
         cd Manifests/$BRANCH_NAME
         sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' adservice.yml
         git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
-
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER_PASSWORD/versions/1
+    env: 'PASSWORD'
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER_USERNAME/versions/1
+    env: 'USERNAME'
