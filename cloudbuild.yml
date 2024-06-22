@@ -19,8 +19,8 @@ steps:
         cd $REPO_NAME
         cd Manifests/$BRANCH_NAME
         sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' adservice.yml
-        git config --global user.email "CloudBuild@gcp-cloud.com"
-        git config --global user.name "CloudBuild"
+        git config --global user.email "raghava01995@gmail.com"
+        git config --global user.name "Raghavendra17N"
         git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
 availableSecrets:
   secretManager:
