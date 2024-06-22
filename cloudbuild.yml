@@ -17,7 +17,6 @@ steps:
     - |
         git clone https://github.com/Raghavendra17N/k8s-application-Manifests.git
         cd $REPO_NAME
-        git checkout $BRANCH_NAME
         cd Manifests/$BRANCH_NAME
         sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' adservice.yml
         git config --global user.email "CloudBuild@gcp-cloud.com"
