@@ -1,0 +1,21 @@
+steps:
+- id: Build Docker Image of the AdService 
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        docker build -t raghava99/adservice-demo:$COMMIT_SHA . 
+        docker push raghava99/adservice-demo:$COMMIT_SHA
+- id: Updating $COMMIT_SHA in Manifests file
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        git clone $REPO_NAME
+        cd $REPO_NAME
+        cd Manifests/$BRANCH_NAME
+        sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' adservice.yml
+        git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
+
