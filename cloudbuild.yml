@@ -1,0 +1,37 @@
+steps:
+- id: Build Docker Image of the AdService 
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        docker build -t raghava99/productcatalogservice-demo:$COMMIT_SHA .
+        docker login --username=$$USERNAME --password=$$PASSWORD
+        docker push raghava99/adservice-demo:$COMMIT_SHA
+  secretEnv: ['USERNAME', 'PASSWORD']
+- id: Updating $COMMIT_SHA in Manifests file
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+        git clone https://github.com/Raghavendra17N/k8s-application-Manifests.git
+        cd $REPO_NAME
+        cd Manifests/$BRANCH_NAME
+        sed -i 's/\(.*\/.*\):[^"]*/\1:$COMMIT_SHA/' product.yml
+        git config --global user.email "raghava01995@gmail.com"
+        git config --global user.name "Raghavendra17N"
+        git config --global url.https://$$TOKEN@github.com/.insteadOf https://github.com/
+        git add .;git commit -m "updated image tage with $COMMIT_SHA";git push
+  secretEnv: ['TOKEN']
+availableSecrets:
+  secretManager:
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-PASSWORD/versions/1
+    env: 'PASSWORD'
+  - versionName: projects/$PROJECT_ID/secrets/DOCKER-USERNAME/versions/1
+    env: 'USERNAME'
+  - versionName: projects/$PROJECT_ID/secrets/GIT-PAT-TOKEN/versions/1
+    env: 'TOKEN'  
+logsBucket: 'gs://charged-muse-376504-iac-tf-state/build-logs'
+options:
+  logging: GCS_ONLY
